@@ -1,0 +1,41 @@
+{
+  "name": "Red Belt",
+  "short_name": "Red Belt",
+  "description": "Ten roads of karate. A girl to bring home, a kingdom to take, a village to keep alive.",
+  "id": "/redbelt/",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "fullscreen",
+  "display_override": [
+    "fullscreen",
+    "standalone"
+  ],
+  "orientation": "portrait",
+  "background_color": "#0a0810",
+  "theme_color": "#0a0810",
+  "categories": [
+    "games",
+    "entertainment"
+  ],
+  "lang": "en",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
