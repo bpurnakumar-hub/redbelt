@@ -1,6 +1,6 @@
 /* Red Belt — offline cache.
    Bump CACHE when you change the game, so phones pick up the new version. */
-var CACHE = 'redbelt-v2';
+var CACHE = 'redbelt-v3';
 var SHELL = [
   './',
   './index.html',
