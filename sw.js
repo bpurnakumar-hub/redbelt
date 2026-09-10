@@ -1,6 +1,7 @@
 /* Red Belt — offline cache.
-   Bump CACHE when you change the game, so phones pick up the new version. */
-var CACHE = 'redbelt-v3';
+   The page itself is fetched network-first, so an update on GitHub shows up
+   the next time the app opens. Icons and the manifest stay cache-first. */
+var CACHE = 'redbelt-v4';
 var SHELL = [
   './',
   './index.html',
@@ -12,11 +13,10 @@ var SHELL = [
 
 self.addEventListener('install', function (e) {
   e.waitUntil(
-    caches.open(CACHE).then(function (c) {
-      return c.addAll(SHELL);
-    }).then(function () {
-      return self.skipWaiting();
-    })
+    caches.open(CACHE)
+      .then(function (c) { return c.addAll(SHELL); })
+      .catch(function () {})
+      .then(function () { return self.skipWaiting(); })
   );
 });
 
@@ -26,14 +26,37 @@ self.addEventListener('activate', function (e) {
       return Promise.all(keys.map(function (k) {
         if (k !== CACHE) return caches.delete(k);
       }));
-    }).then(function () {
-      return self.clients.claim();
-    })
+    }).then(function () { return self.clients.claim(); })
   );
 });
 
+function isPage(req) {
+  return req.mode === 'navigate' ||
+         (req.headers.get('accept') || '').indexOf('text/html') > -1;
+}
+
 self.addEventListener('fetch', function (e) {
   if (e.request.method !== 'GET') return;
+
+  if (isPage(e.request)) {
+    // network first — always try for the newest game
+    e.respondWith(
+      fetch(e.request, { cache: 'no-store' }).then(function (res) {
+        var copy = res.clone();
+        caches.open(CACHE).then(function (c) {
+          c.put('./index.html', copy);
+        }).catch(function () {});
+        return res;
+      }).catch(function () {
+        return caches.match('./index.html').then(function (hit) {
+          return hit || caches.match('./');
+        });
+      })
+    );
+    return;
+  }
+
+  // everything else — cache first
   e.respondWith(
     caches.match(e.request).then(function (hit) {
       if (hit) return hit;
@@ -43,8 +66,6 @@ self.addEventListener('fetch', function (e) {
           c.put(e.request, copy);
         }).catch(function () {});
         return res;
-      }).catch(function () {
-        return caches.match('./index.html');
       });
     })
   );

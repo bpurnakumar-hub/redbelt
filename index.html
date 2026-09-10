@@ -42,18 +42,18 @@
   .banner b{display:block;font-size:clamp(28px,9vw,50px);font-weight:800;letter-spacing:-.02em;text-shadow:0 4px 26px rgba(0,0,0,.85)}
   .banner span{font-size:12.5px;letter-spacing:.18em;opacity:.82}
 
-  .pad{position:fixed;left:0;right:0;bottom:0;padding:0 12px max(12px,env(safe-area-inset-bottom));display:flex;justify-content:space-between;align-items:flex-end;gap:8px}
-  .grp{display:flex;gap:9px}
-  .btn{width:60px;height:60px;border-radius:50%;border:2px solid rgba(255,255,255,.3);background:rgba(18,13,24,.4);backdrop-filter:blur(8px);color:var(--paper);font:600 12px var(--font);letter-spacing:.04em;display:grid;place-content:center;cursor:pointer}
-  .btn.wide{width:68px;height:68px;font-size:13px;border-color:rgba(226,69,63,.7)}
+  .pad{position:fixed;left:0;right:0;bottom:0;padding:0 14px calc(env(safe-area-inset-bottom) + 156px);display:flex;justify-content:space-between;align-items:flex-end;gap:8px}
+  .grp{display:flex;gap:11px}
+  .btn{width:64px;height:64px;border-radius:50%;border:2px solid rgba(255,255,255,.3);background:rgba(18,13,24,.4);backdrop-filter:blur(8px);color:var(--paper);font:600 12px var(--font);letter-spacing:.04em;display:grid;place-content:center;cursor:pointer}
+  .btn.wide{width:74px;height:74px;font-size:13px;border-color:rgba(226,69,63,.7)}
   .btn.hit{background:rgba(226,69,63,.75);border-color:#fff}
   .btn:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
   .arrow{font-size:21px;line-height:1;font-weight:400}
 
   .mini{position:fixed;right:14px;width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.22);background:rgba(18,13,24,.5);color:#fff;font:600 9px var(--font);letter-spacing:.02em;display:none;place-content:center;cursor:pointer;z-index:5}
   .mini.off{opacity:.34;text-decoration:line-through}
-  #musicBtn{bottom:calc(max(12px,env(safe-area-inset-bottom)) + 158px)}
-  #sfxBtn{bottom:calc(max(12px,env(safe-area-inset-bottom)) + 116px)}
+  #musicBtn{bottom:calc(env(safe-area-inset-bottom) + 310px)}
+  #sfxBtn{bottom:calc(env(safe-area-inset-bottom) + 268px)}
 
   .veil{position:fixed;inset:0;display:grid;place-content:center;justify-items:center;text-align:center;padding:24px;background:radial-gradient(120% 80% at 50% 50%,rgba(10,8,16,.5),rgba(10,8,16,.94));z-index:10}
   .veil[hidden]{display:none}
@@ -130,8 +130,6 @@
 </div>
 
 <script>
-/* outside the Claude app there is no window.storage — fall back to localStorage
-   so the "best road" still persists between sessions. */
 if(!window.storage){
   window.storage={
     get:function(k){ return new Promise(function(res,rej){
@@ -1402,7 +1400,7 @@ requestAnimationFrame(frame);
 <script>
 if('serviceWorker' in navigator && location.protocol.slice(0,4)==='http'){
   window.addEventListener('load',function(){
-    navigator.serviceWorker.register('sw.js').catch(function(){});
+    navigator.serviceWorker.register('sw.js').then(function(r){ r.update(); }).catch(function(){});
   });
 }
 </script>
