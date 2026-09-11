@@ -1,7 +1,7 @@
 /* Red Belt — offline cache.
    The page itself is fetched network-first, so an update on GitHub shows up
    the next time the app opens. Icons and the manifest stay cache-first. */
-var CACHE = 'redbelt-v4';
+var CACHE = 'redbelt-v6';
 var SHELL = [
   './',
   './index.html',
